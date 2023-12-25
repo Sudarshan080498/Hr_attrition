@@ -23,3 +23,15 @@ RAW_DATA_DIR_KEY = "raw.csv"
 
 TRAIN_DATA_DIR_KEY = "train.csv"
 TEST_DATA_DIR_KEY = "test.csv"
+
+
+
+## DATA TRANSFORMATION VARIABLES
+
+
+DATA_TRANSFORMATION_ARTIFACT = "data_transformation"
+DATA_PREPROCESSED_DIR = "processer"
+DATA_TRANSFORMATION_PREPROCESSED_OBJ  = "preprocessor.pkl"
+DATA_TRANSFORM_DIR = "transformation"
+TRANSFORM_TRAIN_DIR_KEY = "train.csv"
+TRANSFORM_TEST_DIR_KEY = "test.csv"
