@@ -10,6 +10,7 @@ from sklearn.pipeline import Pipeline
 from dataclasses import dataclass
 from src.logger import logging
 from src.exception import CustomException
+from sklearn.preprocessing import MinMaxScaler
 from src.utils import save_obj
 from src.Config.configuration import (
     PREPROCESSED_OBJ_FILE,
@@ -78,14 +79,15 @@ class DataTransformation:
             # Numerical pipeline
             numerical_pipeline = Pipeline(steps = [
                 ('impute', SimpleImputer(strategy = 'constant', fill_value=0)),
-                ('scaler', StandardScaler(with_mean=False))
+                ('scaler', StandardScaler(with_mean=False)),
+                ('minmax_scaler', MinMaxScaler())
             ])
 
                 # Categorical Pipeline
             categorical_pipeline = Pipeline(steps = [
                 ('impute', SimpleImputer(strategy = 'most_frequent')),
                 ('onehot', OneHotEncoder(handle_unknown = 'ignore')),
-                ('scaler', StandardScaler(with_mean=False))
+                # ('scaler', StandardScaler(with_mean=False))
             ])
 
             preprocessor = ColumnTransformer(transformers=[
@@ -136,7 +138,8 @@ class DataTransformation:
             y_test = test_df[target_columns_name]
             X_train = pd.DataFrame(X_train, columns=X_train.columns)
             X_test = pd.DataFrame(X_test, columns=test_df.columns)
-           
+            y_train = y_train.values
+            y_test = y_test.values
 
             processing_obj = self.get_data_transformation_obj(X_train)
 
@@ -151,6 +154,11 @@ class DataTransformation:
             X_test = processing_obj.transform(X_test)
             train_arr = np.c_[X_train, np.array(y_train)]
             test_arr = np.c_[X_test, np.array(y_test).reshape(-1, 1)]
+
+            # print("type of X_train is:", type(X_train))
+            # print("type of y_train is:", type(y_train))
+            # print("type of y_test is:", type(y_test))
+            # print("type of X_test is:", type(X_test))
 
 
             df_train = pd.DataFrame(train_arr)
