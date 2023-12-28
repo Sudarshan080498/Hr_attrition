@@ -20,34 +20,84 @@ from src.Config.configuration import (
     DATASET_PATH,
 )
 
-df = pd.read_csv(DATASET_PATH)
+folder_path = r'D:\Sudarshan\HR\Hr_attrition\batch_prediction\UPLOADED_CSV_FILE'
+
+# List all files in the folder
+all_files = os.listdir(folder_path)
+
+# Filter files to include only CSV files
+csv_files = [file for file in all_files if file.endswith('.csv')]
+
+# Sort CSV files by modification time (most recent first)
+sorted_csv_files = sorted(csv_files, key=lambda x: os.path.getmtime(os.path.join(folder_path, x)), reverse=True)
+
+# Choose the most recent CSV file
+if sorted_csv_files:
+    most_recent_csv = sorted_csv_files[0]
+
+    # Create the full file path
+    file_path = os.path.join(folder_path, most_recent_csv)
+
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(file_path)
+
+    # Display the DataFrame
+    print(df.head())
+else:
+    print("No CSV files found in the specified folder.")
 
 
 class Feature_Engineering():
+
     def __init__(self):
         logging.info("**********Feature Engineering started ************")
 
-    def transform_data(self,df):
+    def transform_data(self, df):
         try:
-            
-        # Drop unnecessary columns
-            df.drop(['Over18', 'EmployeeCount', 'StandardHours', 'EmployeeNumber'],  axis = 1, inplace = True)
-            df['Attrition'] = df['Attrition'].apply(lambda x: 1 if x == 'Yes' else 0)
-            df['OverTime'] = df['OverTime'].apply(lambda x: 1 if x == 'Yes' else 0)
+            # Check if columns exist before dropping
+            columns_to_drop = ['Over18', 'EmployeeCount', 'StandardHours', 'EmployeeNumber']
+            existing_columns = df.columns
+            columns_to_drop = [col for col in columns_to_drop if col in existing_columns]
 
+            logging.info(f"Columns before one-hot encoding: {df.columns}")
 
-            logging.info("Dropped unnecessary columns")
-            return df
-        
+            # Check if one-hot encoding has already been performed
+            one_hot_columns = ['BusinessTravel_Non-Travel', 'Department_Human Resources', 'EducationField_Human Resources', 
+                               'Gender_Female', 'JobRole_Healthcare Representative', 'MaritalStatus_Divorced']
+
+            if any(col in df.columns for col in one_hot_columns):
+                logging.warning("One-hot encoding already applied. Skipping the one-hot encoding step.")
+                return df
+
+            required_columns = ['BusinessTravel', 'Department', 'EducationField', 'Gender', 'JobRole', 'MaritalStatus']
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            if missing_columns:
+                print("Missing columns in DataFrame X:", missing_columns)
+                # Optionally, raise an exception or handle the missing columns here
+            else:
+                print("All required columns are present in DataFrame X.")
+
+            X = pd.get_dummies(df, columns=required_columns)
+            logging.info(f"DataFrame after one-hot encoding: {X}")
+
+            # Drop columns if they exist
+            if columns_to_drop:
+                df.drop(columns=columns_to_drop, axis=1, inplace=True)
+                logging.info(f"Dropped columns: {columns_to_drop}")
+            else:
+                logging.warning("Columns to drop not found in DataFrame.")
+
+            return X
+
         except Exception as e:
-            raise CustomException( e, sys)
+            raise CustomException(e, sys)
         
-    def fit(self,X,y=None):
+    def fit(self,df,y=None):
         return self
     
-    def transform(self,X:pd.DataFrame, y=None):
+    def transform(self,df:pd.DataFrame, y=None):
         try:    
-            transformed_df=self.transform_data(X)
+            transformed_df=self.transform_data(df)
                 
             return transformed_df
         except Exception as e:
@@ -73,8 +123,10 @@ class DataTransformation:
                 df = pd.DataFrame(df, columns=df.columns)
             elif isinstance(df, np.ndarray):
                 df = pd.DataFrame(df)
-            numerical_feature = list(df.select_dtypes(include=['number']).columns)
-            categorical_features = list(df.select_dtypes(exclude=['int64', 'float64']).columns)
+            numerical_feature = ['Age','DailyRate','DistanceFromHome','Education','EnvironmentSatisfaction','HourlyRate',
+                                'JobInvolvement','JobLevel','JobSatisfaction','MonthlyIncome','MonthlyRate','NumCompaniesWorked','PercentSalaryHike','PerformanceRating','RelationshipSatisfaction',
+                                'StockOptionLevel','TotalWorkingYears','TrainingTimesLastYear','WorkLifeBalance','YearsAtCompany','OverTime','YearsInCurrentRole','YearsSinceLastPromotion','YearsWithCurrManager']
+            categorical_features = ['BusinessTravel','Department','EducationField','Gender','JobRole','MaritalStatus']
 
             # Numerical pipeline
             numerical_pipeline = Pipeline(steps = [
@@ -119,8 +171,13 @@ class DataTransformation:
             logging.info("Obtaining FE steps object")
             fe_obj = self.get_feature_engineering_object()
 
+            logging.info("Transforming training data")
             train_df = fe_obj.fit_transform(train_df)
+            logging.info(f"Transformed training data columns: {train_df.columns}")
+
+            logging.info("Transforming test data")
             test_df = fe_obj.transform(test_df)
+            logging.info(f"Transformed test data columns: {test_df.columns}")
 
             train_df.to_csv("train_data.csv")
             test_df.to_csv("test_data.csv")
@@ -145,6 +202,7 @@ class DataTransformation:
 
 
             X_train = processing_obj.fit_transform(X_train)
+            
 
             # fe_obj.fit_transform(X_train)
 

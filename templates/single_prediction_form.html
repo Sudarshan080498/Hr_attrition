@@ -1,0 +1,188 @@
+<!-- single_prediction_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attrition Prediction</title>
+<style>
+     body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"] {
+            margin: 5px;
+        }
+
+        select {
+            appearance: none;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enter Employee Information for Prediction</h1>
+    <form action="/single_prediction_form" method="post">
+        <!-- Include all the input fields here -->
+        <label for="Age">Age:</label>
+        <input type="number" name="Age" required><br>
+
+        <label for="DailyRate">Daily Rate:</label>
+        <input type="number" name="DailyRate" required><br>
+
+        <label for="DistanceFromHome">Distance From Home:</label>
+        <input type="number" name="DistanceFromHome" required><br>
+
+        <label for="Education">Education:</label>
+        <input type="number" name="Education" required><br>
+
+        <label for="EnvironmentSatisfaction">Environment Satisfaction:</label>
+        <input type="number" name="EnvironmentSatisfaction" required><br>
+
+        <label for="HourlyRate">Hourly Rate:</label>
+        <input type="number" name="HourlyRate" required><br>
+
+        <label for="JobInvolvement">Job Involvement:</label>
+        <input type="number" name="JobInvolvement" required><br>
+
+        <label for="JobLevel">Job Level:</label>
+        <input type="number" name="JobLevel" required><br>
+
+        <label for="JobSatisfaction">Job Satisfaction:</label>
+        <input type="number" name="JobSatisfaction" required><br>
+
+        <label for="MonthlyIncome">Monthly Income:</label>
+        <input type="number" name="MonthlyIncome" required><br>
+
+        <label for="MonthlyRate">Monthly Rate:</label>
+        <input type="number" name="MonthlyRate" required><br>
+
+        <label for="NumCompaniesWorked">Number of Companies Worked:</label>
+        <input type="number" name="NumCompaniesWorked" required><br>
+
+        <label for="PercentSalaryHike">Percent Salary Hike:</label>
+        <input type="number" name="PercentSalaryHike" required><br>
+
+        <label for="PerformanceRating">Performance Rating:</label>
+        <input type="number" name="PerformanceRating" required><br>
+
+        <label for="RelationshipSatisfaction">Relationship Satisfaction:</label>
+        <input type="number" name="RelationshipSatisfaction" required><br>
+
+        <label for="StockOptionLevel">Stock Option Level:</label>
+        <input type="number" name="StockOptionLevel" required><br>
+
+        <label for="TotalWorkingYears">Total Working Years:</label>
+        <input type="number" name="TotalWorkingYears" required><br>
+
+        <label for="TrainingTimesLastYear">Training Times Last Year:</label>
+        <input type="number" name="TrainingTimesLastYear" required><br>
+
+        <label for="WorkLifeBalance">Work Life Balance:</label>
+        <input type="number" name="WorkLifeBalance" required><br>
+
+        <label for="YearsAtCompany">Years at Company:</label>
+        <input type="number" name="YearsAtCompany" required><br>
+
+        <label for="YearsInCurrentRole">Years in Current Role:</label>
+        <input type="number" name="YearsInCurrentRole" required><br>
+
+        <label for="YearsSinceLastPromotion">Years Since Last Promotion:</label>
+        <input type="number" name="YearsSinceLastPromotion" required><br>
+
+        <label for="YearsWithCurrManager">Years with Current Manager:</label>
+        <input type="number" name="YearsWithCurrManager" required><br>
+
+                <label for="BusinessTravel">Business Travel:</label>
+        <select name="BusinessTravel" required>
+            <option value="Travel_Rarely">Travel Rarely</option>
+            <option value="Travel_Frequently">Travel Frequently</option>
+            <option value="Non-Travel">Non-Travel</option>
+        </select><br>
+
+        <label for="Department">Department:</label>
+        <select name="Department" required>
+            <option value="Sales">Sales</option>
+            <option value="Research & Development">Research & Development</option>
+            <option value="Human Resources">Human Resources</option>
+        </select><br>
+
+        <label for="EducationField">Education Field:</label>
+        <select name="EducationField" required>
+            <option value="Life Sciences">Life Sciences</option>
+            <option value="Medical">Medical</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Technical Degree">Technical Degree</option>
+            <option value="Other">Other</option>
+        </select><br>
+
+        <label for="Gender">Gender:</label>
+        <input type="radio" name="Gender" value="Male" required> Male
+        <input type="radio" name="Gender" value="Female" required> Female<br>
+
+        <label for="JobRole">Job Role:</label>
+        <select name="JobRole" required>
+            <option value="Sales Executive">Sales Executive</option>
+            <option value="Research Scientist">Research Scientist</option>
+            <option value="Laboratory Technician">Laboratory Technician</option>
+            <option value="Manufacturing Director">Manufacturing Director</option>
+            <option value="Healthcare Representative">Healthcare Representative</option>
+            <!-- Add more options based on your dataset -->
+        </select><br>
+
+        <label for="MaritalStatus">Marital Status:</label>
+        <input type="radio" name="MaritalStatus" value="Single" required> Single
+        <input type="radio" name="MaritalStatus" value="Married" required> Married
+        <input type="radio" name="MaritalStatus" value="Divorced" required> Divorced<br>
+
+        <label for="OverTime">Over Time:</label>
+        <select name="OverTime" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select><br>
+
+        <input type="submit" value="Predict">
+    </form>
+</body>
+</html>

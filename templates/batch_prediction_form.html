@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Batch Prediction Form</title>
+    <style>
+        body {
+            background-image: url("D:\Sudarshan\HR\Hr_attrition\static\attrition_image.jpeg");
+            background-size: cover;
+            font-family: 'Open Sans', sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 40px;
+            margin-top: 80px;
+        }
+
+        .form-container {
+            margin-top: 40px;
+        }
+
+        .form {
+            background-color: rgba(240, 240, 240, 0.8);
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 400px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Batch Prediction Form</h1>
+
+    <div class="form-container">
+        <form class="form" action="{{ url_for('perform_batch_prediction') }}" method="post" enctype="multipart/form-data">
+            <label for="csvFile">Upload CSV File:</label>
+            <input type="file" id="csvFile" name="csvFile" accept=".csv" required>
+            <button type="submit" class="button">Predict Data</button>
+        </form>
+    </div>
+</body>
+</html>
